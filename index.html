@@ -2215,8 +2215,13 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     var enterBtn = document.getElementById('enterBtn');
     var landingError = document.getElementById('landingError');
     
-    var currentReader = sessionStorage.getItem('sepasanGkerusi-reader-id');
-    if (currentReader) {
+    // Jana ID unik untuk pembaca (simpan dalam localStorage, bukan sessionStorage)
+    var currentReader = localStorage.getItem('sepasanGkerusi-reader-id');
+    if (!currentReader) {
+        // Jika tiada ID, tunggu landing page
+        currentReader = null;
+    } else {
+        // Jika ada ID, terus masuk
         landingPage.style.display = 'none';
         mainContent.style.display = 'block';
     }
@@ -2224,7 +2229,8 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     enterBtn.addEventListener('click', function() {
         var name = readerNameInput.value.trim();
         if (name.length > 0) {
-            sessionStorage.setItem('sepasanGkerusi-reader-id', name);
+            // Simpan ID dalam localStorage (kekal walaupun refresh)
+            localStorage.setItem('sepasanGkerusi-reader-id', name);
             currentReader = name;
             landingPage.style.display = 'none';
             mainContent.style.display = 'block';
@@ -2251,17 +2257,6 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     var clearBtn = document.getElementById('readerClear');
     
     var allNotes = [];
-    var myNoteIds = [];
-    
-    // Muat senarai ID dari sesi lepas
-    var savedIds = sessionStorage.getItem('sepasanGkerusi-my-notes');
-    if (savedIds) {
-        try {
-            myNoteIds = JSON.parse(savedIds);
-        } catch (e) {
-            myNoteIds = [];
-        }
-    }
     
     // Dengar perubahan di Firebase (real-time)
     commentsRef.on('value', function(snapshot) {
@@ -2287,7 +2282,8 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
             var note = allNotes[i];
             html += '<div style="color:var(--text-note);font-size:0.8em;margin-bottom:2px;font-style:normal;">' + escapeHTML(note.reader) + '</div>';
             html += '<div>' + note.text.replace(/\n/g, '<br>') + '</div>';
-            if (myNoteIds.indexOf(note.id) !== -1) {
+            // Tunjuk butang padam jika ID pembaca sepadan dengan ID dalam komen
+            if (currentReader && note.readerId === currentReader) {
                 html += ' <button class="delete-note-btn" data-id="' + note.id + '">[padam]</button>';
             }
             if (i < allNotes.length - 1) {
@@ -2313,8 +2309,6 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     
     function deleteNote(noteId) {
         commentsRef.child(noteId).remove();
-        myNoteIds = myNoteIds.filter(function(id) { return id !== noteId; });
-        sessionStorage.setItem('sepasanGkerusi-my-notes', JSON.stringify(myNoteIds));
         meta.textContent = 'Kata-kata itu telah dipadam.';
     }
     
@@ -2330,10 +2324,13 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
         var text = input.value.trim();
         if (text && currentReader) {
             var noteId = Date.now().toString();
-            var newNote = { id: noteId, text: text, reader: currentReader };
+            var newNote = { 
+                id: noteId, 
+                text: text, 
+                reader: currentReader,
+                readerId: currentReader  // Simpan ID pembaca dalam komen
+            };
             commentsRef.child(noteId).set(newNote);
-            myNoteIds.push(noteId);
-            sessionStorage.setItem('sepasanGkerusi-my-notes', JSON.stringify(myNoteIds));
             meta.textContent = 'Kata-kata kau telah disimpan. Ia akan kelihatan kepada semua pelawat.';
             input.value = '';
             actions.style.display = 'none';
@@ -2341,19 +2338,26 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     });
     
     clearBtn.addEventListener('click', function() {
-        if (myNoteIds.length > 0) {
-            if (confirm('Padam semua kata-kata yang telah kau tinggalkan?')) {
-                for (var i = 0; i < myNoteIds.length; i++) {
-                    commentsRef.child(myNoteIds[i]).remove();
+        if (currentReader) {
+            // Cari semua komen yang ditulis oleh pembaca ini
+            var notesToDelete = [];
+            for (var i = 0; i < allNotes.length; i++) {
+                if (allNotes[i].readerId === currentReader) {
+                    notesToDelete.push(allNotes[i].id);
                 }
-                myNoteIds = [];
-                sessionStorage.removeItem('sepasanGkerusi-my-notes');
-                input.value = '';
-                actions.style.display = 'none';
-                meta.textContent = 'Semua kata-kata kau telah dipadam.';
             }
-        } else {
-            meta.textContent = 'Tiada kata-kata kau untuk dipadam.';
+            if (notesToDelete.length > 0) {
+                if (confirm('Padam semua kata-kata yang telah kau tinggalkan? (' + notesToDelete.length + ' komen)')) {
+                    for (var j = 0; j < notesToDelete.length; j++) {
+                        commentsRef.child(notesToDelete[j]).remove();
+                    }
+                    input.value = '';
+                    actions.style.display = 'none';
+                    meta.textContent = 'Semua kata-kata kau telah dipadam.';
+                }
+            } else {
+                meta.textContent = 'Tiada kata-kata kau untuk dipadam.';
+            }
         }
     });
 })();
