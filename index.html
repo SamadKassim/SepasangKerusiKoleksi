@@ -20,9 +20,7 @@
     --border-poem: #2a2a2a;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     font-family: 'Inter', sans-serif;
@@ -148,10 +146,7 @@ body {
     background-color: var(--bg-soft);
     line-height: 1.7;
 }
-.character-note strong {
-    color: var(--text-main);
-    font-weight: 500;
-}
+.character-note strong { color: var(--text-main); font-weight: 500; }
 
 .editor-note {
     font-style: italic;
@@ -163,11 +158,72 @@ body {
     text-align: center;
 }
 
-.spacer {
-    height: 60px;
+.spacer { height: 60px; }
+
+/* LANDING PAGE ID PEMBACA */
+#landingPage {
+    text-align: center;
+    margin: 120px auto;
+    max-width: 500px;
+}
+#landingPage .landing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5em;
+    color: var(--text-main);
+    margin-bottom: 10px;
+}
+#landingPage .landing-subtitle {
+    font-size: 0.9em;
+    color: var(--text-note);
+    margin-bottom: 40px;
+    font-style: italic;
+}
+#landingPage .landing-prompt {
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    font-size: 0.95em;
+}
+#landingPage input {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-main);
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1em;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    outline: none;
+    margin-bottom: 15px;
+}
+#landingPage input::placeholder {
+    color: var(--text-note);
+    opacity: 0.5;
+    font-style: italic;
+}
+#landingPage input:focus { border-color: var(--accent); }
+#landingPage .landing-error {
+    color: #c08080;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    display: none;
+}
+#landingPage button {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--text-dim);
+    padding: 10px 30px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#landingPage button:hover {
+    background: var(--accent);
+    color: var(--bg-main);
 }
 
-/* RUANG KOMEN DI HUJUNG */
+/* RUANG KOMEN */
 .reader-space {
     margin: 80px 0 40px 0;
     padding: 30px 0;
@@ -215,15 +271,8 @@ body {
     outline: none;
     transition: border-color 0.3s ease;
 }
-.reader-space .reader-input:focus {
-    border-color: var(--accent);
-    color: var(--text-main);
-}
-.reader-space .reader-input::placeholder {
-    color: var(--text-note);
-    font-style: italic;
-    opacity: 0.6;
-}
+.reader-space .reader-input:focus { border-color: var(--accent); color: var(--text-main); }
+.reader-space .reader-input::placeholder { color: var(--text-note); font-style: italic; opacity: 0.6; }
 .reader-space .reader-meta {
     font-size: 0.75em;
     color: var(--text-note);
@@ -231,12 +280,7 @@ body {
     font-style: italic;
     opacity: 0.7;
 }
-.reader-space .reader-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+.reader-space .reader-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .reader-space .reader-btn {
     background: transparent;
     border: 1px solid var(--accent);
@@ -249,43 +293,32 @@ body {
     transition: all 0.3s ease;
     letter-spacing: 0.5px;
 }
-.reader-space .reader-btn:hover {
-    background: var(--accent);
-    color: var(--bg-main);
-    border-color: var(--accent);
-}
-.reader-space .clear-btn {
-    background: transparent;
-    border-color: var(--line);
-    color: var(--text-note);
-}
-.reader-space .clear-btn:hover {
-    background: #3a2020;
-    border-color: #5a3030;
-    color: #c08080;
-}
+.reader-space .reader-btn:hover { background: var(--accent); color: var(--bg-main); }
+.reader-space .clear-btn { background: transparent; border-color: var(--line); color: var(--text-note); }
+.reader-space .clear-btn:hover { background: #3a2020; border-color: #5a3030; color: #c08080; }
 
-a {
-    color: var(--text-dim);
-    text-decoration: none;
+.delete-note-btn {
+    background: transparent;
+    border: none;
+    color: #8a8885;
+    cursor: pointer;
+    font-size: 0.7em;
+    font-style: italic;
+    opacity: 0.6;
+    font-family: 'Inter', sans-serif;
 }
-a:hover {
-    color: var(--text-main);
-}
+.delete-note-btn:hover { opacity: 1; color: #c08080; }
 
 @media print {
-    body {
-        background-color: white !important;
-        color: #1a1a1a !important;
-    }
+    body { background-color: white !important; color: #1a1a1a !important; }
     .section-header { page-break-after: avoid; }
     .main-title-page h1, .main-title-page .subtitle, .main-title-page .desc, .main-title-page .author,
     .section-header h2, .section-header .section-desc, .section-header .section-num,
     .poem-title, .poem-body, .poem-note, .section-note, .character-note, .editor-note {
-        color: #1a1a1a !important;
-        border-color: #ccc !important;
+        color: #1a1a1a !important; border-color: #ccc !important;
     }
     .character-note { background-color: #f9f9f9 !important; border: 1px solid #ddd !important; }
+    #landingPage { display: none; }
     .reader-space { display: none; }
 }
 
@@ -300,8 +333,23 @@ a:hover {
 <body>
 
 <!-- ============================================ -->
-<!-- MUKA SURAT UTAMA -->
+<!-- LANDING PAGE: IDENTITI PEMBACA -->
 <!-- ============================================ -->
+<div id="landingPage">
+<div class="landing-title">SEPASANGKERUSI</div>
+<div class="landing-subtitle">sebuah kompilasi puisi</div>
+<div class="landing-prompt">Bagaimana aku harus memanggilmu?</div>
+<input type="text" id="readerNameInput" placeholder="Namamu...">
+<div class="landing-error" id="landingError">Masukkan nama untuk masuk.</div>
+<button id="enterBtn">Masuk</button>
+</div>
+
+<!-- ============================================ -->
+<!-- KOMPILASI (disembunyikan sehingga masuk) -->
+<!-- ============================================ -->
+<div id="mainContent" style="display:none;">
+
+<!-- MUKA SURAT UTAMA -->
 <div class="main-title-page">
 <h1>SEPASANGKERUSI</h1>
 <div class="subtitle">Kompilasi Puisi</div>
@@ -310,9 +358,7 @@ a:hover {
 <div class="desc" style="margin-top:15px; font-size:.85em; color:var(--text-note)">Nama-nama dalam prolog (Nadim, Teja, Melur) bukan nama sebenar.</div>
 </div>
 
-<!-- ============================================ -->
 <!-- PROLOG -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">PROLOG</div>
 <h2>LALU</h2>
@@ -454,9 +500,7 @@ TAMAT</div>
 
 <div class="spacer"></div>
 
-<!-- ============================================ -->
-<!-- BAHAGIAN I: HUJAN & KEHANYUTAN -->
-<!-- ============================================ -->
+<!-- BAHAGIAN 1: HUJAN & KEHANYUTAN -->
 <div class="section-header">
 <div class="section-num">BAHAGIAN SATU</div>
 <h2>Hujan & Kehanyutan</h2>
@@ -773,9 +817,7 @@ Kerana sekarang aku hanya mampu hanyut.</div>
 
 <p class="editor-note">Tamat Bahagian Satu — 10 karya.</p>
 
-<!-- ============================================ -->
 <!-- BAHAGIAN 2: APSARA & MITOS PERIBADI -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">BAHAGIAN DUA</div>
 <h2>Apsara & Mitos Peribadi</h2>
@@ -877,7 +919,8 @@ Jauh sekali apa yang dia dengar ketika di syurga.
 "Tuhan tak ciptakan dunia untuk manusia membenci sesama," katanya
 Maka bermula-lah hidup Sang Cupid sebagai si penyebar cinta.
 
-Ini kisah tentang Sang Cupid,
+I
+ni kisah tentang Sang Cupid,
 Teruskan hidup, menyebarkan cinta,
 
 Pertama kali sepanjang Sang Cupid menyebar cinta,
@@ -1083,9 +1126,7 @@ Well, the 74th race, took his life, and he dies.</div>
 
 <div class="spacer"></div>
 
-<!-- ============================================ -->
 <!-- BAHAGIAN 3: NERAKA PERIBADI -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">BAHAGIAN TIGA</div>
 <h2>Neraka Peribadi</h2>
@@ -1316,9 +1357,7 @@ Kan?</div>
 
 <div class="spacer"></div>
 
-<!-- ============================================ -->
 <!-- BAHAGIAN 4: SURAT UNTUK YANG TELAH PERGI -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">BAHAGIAN EMPAT</div>
 <h2>Surat Untuk Yang Telah Pergi</h2>
@@ -1510,9 +1549,7 @@ Dengan orang yang lebih layak menerima setiap hela nyawaku dari-Mu; dia.</div>
 
 <div class="spacer"></div>
 
-<!-- ============================================ -->
 <!-- BAHAGIAN 5: CINTA TAK TERHANTAR -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">BAHAGIAN LIMA</div>
 <h2>Cinta Tak Terhantar</h2>
@@ -1837,9 +1874,7 @@ Pulanglah SEMUAnya..
 
 <div class="spacer"></div>
 
-<!-- ============================================ -->
 <!-- BAHAGIAN 6: SURAT-SURAT CINTA & AKAD -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">BAHAGIAN ENAM</div>
 <h2>Surat-Surat Cinta & Akad</h2>
@@ -1957,9 +1992,7 @@ Lahir semula sebagai suami orang.</div>
 
 <div class="spacer"></div>
 
-<!-- ============================================ -->
 <!-- BAHAGIAN 7: SUARA DARI LUAR -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">BAHAGIAN TUJUH</div>
 <h2>Suara Dari Luar</h2>
@@ -2114,9 +2147,7 @@ Kamu boleh jadi
 
 <div class="spacer"></div>
 
-<!-- ============================================ -->
 <!-- TAMAT KOMPILASI -->
-<!-- ============================================ -->
 <div class="section-header">
 <div class="section-num">TAMAT</div>
 </div>
@@ -2132,9 +2163,7 @@ dari neraka ke penerimaan.
 Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
 </div>
 
-<!-- ============================================ -->
 <!-- RUANG KOMEN PEMBACA -->
-<!-- ============================================ -->
 <div class="reader-space">
 <div class="reader-title">. . .</div>
 <div class="reader-wall" id="readerWall"></div>
@@ -2147,11 +2176,50 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
 </div>
 </div>
 
+</div><!-- TAMAT mainContent -->
+
 <!-- ============================================ -->
-<!-- JAVASCRIPT: RUANG KOMEN -->
+<!-- JAVASCRIPT: LANDING PAGE + RUANG KOMEN -->
 <!-- ============================================ -->
 <script>
 (function() {
+    // ============================================
+    // LANDING PAGE LOGIC
+    // ============================================
+    var landingPage = document.getElementById('landingPage');
+    var mainContent = document.getElementById('mainContent');
+    var readerNameInput = document.getElementById('readerNameInput');
+    var enterBtn = document.getElementById('enterBtn');
+    var landingError = document.getElementById('landingError');
+    
+    // Kalau dah ada ID dalam session, terus masuk
+    var currentReader = sessionStorage.getItem('sepasanGkerusi-reader-id');
+    if (currentReader) {
+        landingPage.style.display = 'none';
+        mainContent.style.display = 'block';
+    }
+    
+    enterBtn.addEventListener('click', function() {
+        var name = readerNameInput.value.trim();
+        if (name.length > 0) {
+            sessionStorage.setItem('sepasanGkerusi-reader-id', name);
+            landingPage.style.display = 'none';
+            mainContent.style.display = 'block';
+            landingError.style.display = 'none';
+        } else {
+            landingError.style.display = 'block';
+        }
+    });
+    
+    readerNameInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            enterBtn.click();
+        }
+    });
+    
+    // ============================================
+    // RUANG KOMEN LOGIC
+    // ============================================
     var wall = document.getElementById('readerWall');
     var input = document.getElementById('readerInput');
     var actions = document.getElementById('readerActions');
@@ -2159,13 +2227,59 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     var submitBtn = document.getElementById('readerSubmit');
     var clearBtn = document.getElementById('readerClear');
     
-    // Muat komen sedia ada
+    // Muat semua komen sedia ada
     var saved = localStorage.getItem('sepasanGkerusi-reader-notes');
-    if (saved) {
-        wall.innerHTML = saved.replace(/\n/g, '<br>');
+    var allNotes = saved ? JSON.parse(saved) : [];
+    
+    // Muat senarai ID komen yang dimiliki oleh pembaca semasa
+    var myNotes = sessionStorage.getItem('sepasanGkerusi-my-notes');
+    var myNoteIds = myNotes ? JSON.parse(myNotes) : [];
+    
+    // Papar semua komen di dinding
+    function renderWall() {
+        if (allNotes.length === 0) {
+            wall.innerHTML = '';
+            return;
+        }
+        var html = '';
+        for (var i = 0; i < allNotes.length; i++) {
+            var note = allNotes[i];
+            html += '<div style="color:var(--text-note);font-size:0.8em;margin-bottom:2px;font-style:normal;">' + escapeHTML(note.reader) + '</div>';
+            html += '<div>' + note.text.replace(/\n/g, '<br>') + '</div>';
+            if (myNoteIds.indexOf(note.id) !== -1) {
+                html += ' <button class="delete-note-btn" data-id="' + note.id + '">[padam]</button>';
+            }
+            if (i < allNotes.length - 1) {
+                html += '<div class="reader-divider">—</div>';
+            }
+        }
+        wall.innerHTML = html;
+        
+        var deleteBtns = document.querySelectorAll('.delete-note-btn');
+        for (var j = 0; j < deleteBtns.length; j++) {
+            deleteBtns[j].addEventListener('click', function() {
+                var noteId = this.getAttribute('data-id');
+                deleteNote(noteId);
+            });
+        }
+    }
+    renderWall();
+    
+    function escapeHTML(str) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
     }
     
-    // Tunjuk button bila ada teks
+    function deleteNote(noteId) {
+        allNotes = allNotes.filter(function(note) { return note.id !== noteId; });
+        localStorage.setItem('sepasanGkerusi-reader-notes', JSON.stringify(allNotes));
+        myNoteIds = myNoteIds.filter(function(id) { return id !== noteId; });
+        sessionStorage.setItem('sepasanGkerusi-my-notes', JSON.stringify(myNoteIds));
+        renderWall();
+        meta.textContent = 'Kata-kata itu telah dipadam.';
+    }
+    
     input.addEventListener('input', function() {
         if (input.value.trim().length > 0) {
             actions.style.display = 'flex';
@@ -2174,25 +2288,36 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
         }
     });
     
-    // Simpan bila klik submit
     submitBtn.addEventListener('click', function() {
         var text = input.value.trim();
-        if (text) {
-            localStorage.setItem('sepasanGkerusi-reader-notes', text);
-            wall.innerHTML = text.replace(/\n/g, '<br>');
-            meta.textContent = 'Kata-kata kau telah disimpan. Ia akan kekal di sini.';
+        if (text && currentReader) {
+            var noteId = Date.now().toString();
+            allNotes.push({ id: noteId, text: text, reader: currentReader });
+            localStorage.setItem('sepasanGkerusi-reader-notes', JSON.stringify(allNotes));
+            myNoteIds.push(noteId);
+            sessionStorage.setItem('sepasanGkerusi-my-notes', JSON.stringify(myNoteIds));
+            renderWall();
+            meta.textContent = 'Kata-kata kau telah disimpan. Kau boleh padamnya selagi sesi ini masih hidup.';
             input.value = '';
             actions.style.display = 'none';
         }
     });
     
-    // Padam
     clearBtn.addEventListener('click', function() {
-        localStorage.removeItem('sepasanGkerusi-reader-notes');
-        wall.innerHTML = '';
-        input.value = '';
-        actions.style.display = 'none';
-        meta.textContent = 'Kata-kata telah dipadam. Ruang ini kosong semula.';
+        if (myNoteIds.length > 0) {
+            if (confirm('Padam semua kata-kata yang telah kau tinggalkan?')) {
+                allNotes = allNotes.filter(function(note) { return myNoteIds.indexOf(note.id) === -1; });
+                localStorage.setItem('sepasanGkerusi-reader-notes', JSON.stringify(allNotes));
+                myNoteIds = [];
+                sessionStorage.removeItem('sepasanGkerusi-my-notes');
+                renderWall();
+                input.value = '';
+                actions.style.display = 'none';
+                meta.textContent = 'Semua kata-kata kau telah dipadam.';
+            }
+        } else {
+            meta.textContent = 'Tiada kata-kata kau untuk dipadam.';
+        }
     });
 })();
 </script>
