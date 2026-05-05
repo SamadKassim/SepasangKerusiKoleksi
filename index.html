@@ -2197,6 +2197,12 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     if (currentReader) {
         landingPage.style.display = 'none';
         mainContent.style.display = 'block';
+// "Kejutkan" ruang komen selepas ia kelihatan
+var inputField = document.getElementById('readerInput');
+if (inputField) {
+    inputField.focus();
+    inputField.blur();
+}
     }
     
     enterBtn.addEventListener('click', function() {
