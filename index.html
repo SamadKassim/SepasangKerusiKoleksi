@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEPASANGKERUSI — Kompilasi Puisi</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
 <style>
 /* ============================================ */
 /* TEMA: QUIET DESCENT (HUJAN MALAM)            */
@@ -2169,7 +2174,7 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
 <div class="reader-wall" id="readerWall"></div>
 <div class="reader-divider">—</div>
 <textarea class="reader-input" id="readerInput" placeholder="Tinggalkan kata-kata..."></textarea>
-<div class="reader-meta" id="readerMeta">Apa yang kau tulis di sini akan hilang bila kau tutup halaman — melainkan kau pilih untuk simpan.</div>
+<div class="reader-meta" id="readerMeta">Kata-kata kau akan kelihatan kepada semua pelawat.</div>
 <div class="reader-actions" id="readerActions" style="display:none; margin-top:12px;">
 <button id="readerSubmit" class="reader-btn">Simpan kata-kata ini</button>
 <button id="readerClear" class="reader-btn clear-btn">Padam</button>
@@ -2179,10 +2184,28 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
 </div><!-- TAMAT mainContent -->
 
 <!-- ============================================ -->
-<!-- JAVASCRIPT: LANDING PAGE + RUANG KOMEN -->
+<!-- JAVASCRIPT: FIREBASE + LANDING PAGE + RUANG KOMEN -->
 <!-- ============================================ -->
 <script>
 (function() {
+    // ============================================
+    // FIREBASE CONFIG — GUNA CONFIG SEBENAR KAU
+    // ============================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyDPzQm4Dz6r1E9g6AdJwZGyn3p2hWa4iKk",
+        authDomain: "sepasangkerusikoleksi.firebaseapp.com",
+        databaseURL: "https://sepasangkerusikoleksi-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "sepasangkerusikoleksi",
+        storageBucket: "sepasangkerusikoleksi.firebasestorage.app",
+        messagingSenderId: "254718885831",
+        appId: "1:254718885831:web:b75ae32a116bc20ad563e2"
+    };
+
+    // Initialize Firebase (cara compat)
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const commentsRef = database.ref('comments');
+
     // ============================================
     // LANDING PAGE LOGIC
     // ============================================
@@ -2192,23 +2215,17 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     var enterBtn = document.getElementById('enterBtn');
     var landingError = document.getElementById('landingError');
     
-    // Kalau dah ada ID dalam session, terus masuk
     var currentReader = sessionStorage.getItem('sepasanGkerusi-reader-id');
     if (currentReader) {
         landingPage.style.display = 'none';
         mainContent.style.display = 'block';
-// "Kejutkan" ruang komen selepas ia kelihatan
-var inputField = document.getElementById('readerInput');
-if (inputField) {
-    inputField.focus();
-    inputField.blur();
-}
     }
     
     enterBtn.addEventListener('click', function() {
         var name = readerNameInput.value.trim();
         if (name.length > 0) {
             sessionStorage.setItem('sepasanGkerusi-reader-id', name);
+            currentReader = name;
             landingPage.style.display = 'none';
             mainContent.style.display = 'block';
             landingError.style.display = 'none';
@@ -2224,7 +2241,7 @@ if (inputField) {
     });
     
     // ============================================
-    // RUANG KOMEN LOGIC
+    // RUANG KOMEN LOGIC (FIREBASE)
     // ============================================
     var wall = document.getElementById('readerWall');
     var input = document.getElementById('readerInput');
@@ -2233,29 +2250,31 @@ if (inputField) {
     var submitBtn = document.getElementById('readerSubmit');
     var clearBtn = document.getElementById('readerClear');
     
-    // Muat semua komen sedia ada
-var saved = localStorage.getItem('sepasanGkerusi-reader-notes');
-var allNotes = [];
-if (saved) {
-    try {
-        var parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-            allNotes = parsed;
-        } else {
-            // Data lama bukan array — buang
-            localStorage.removeItem('sepasanGkerusi-reader-notes');
-            allNotes = [];
-        }
-    } catch (e) {
-        // Data rosak — buang
-        localStorage.removeItem('sepasanGkerusi-reader-notes');
-        allNotes = [];
-    }
-}
+    var allNotes = [];
+    var myNoteIds = [];
     
-    // Muat senarai ID komen yang dimiliki oleh pembaca semasa
-    var myNotes = sessionStorage.getItem('sepasanGkerusi-my-notes');
-    var myNoteIds = myNotes ? JSON.parse(myNotes) : [];
+    // Muat senarai ID dari sesi lepas
+    var savedIds = sessionStorage.getItem('sepasanGkerusi-my-notes');
+    if (savedIds) {
+        try {
+            myNoteIds = JSON.parse(savedIds);
+        } catch (e) {
+            myNoteIds = [];
+        }
+    }
+    
+    // Dengar perubahan di Firebase (real-time)
+    commentsRef.on('value', function(snapshot) {
+        var data = snapshot.val();
+        allNotes = [];
+        if (data) {
+            var keys = Object.keys(data);
+            for (var i = 0; i < keys.length; i++) {
+                allNotes.push(data[keys[i]]);
+            }
+        }
+        renderWall();
+    });
     
     // Papar semua komen di dinding
     function renderWall() {
@@ -2285,7 +2304,6 @@ if (saved) {
             });
         }
     }
-    renderWall();
     
     function escapeHTML(str) {
         var div = document.createElement('div');
@@ -2294,11 +2312,9 @@ if (saved) {
     }
     
     function deleteNote(noteId) {
-        allNotes = allNotes.filter(function(note) { return note.id !== noteId; });
-        localStorage.setItem('sepasanGkerusi-reader-notes', JSON.stringify(allNotes));
+        commentsRef.child(noteId).remove();
         myNoteIds = myNoteIds.filter(function(id) { return id !== noteId; });
         sessionStorage.setItem('sepasanGkerusi-my-notes', JSON.stringify(myNoteIds));
-        renderWall();
         meta.textContent = 'Kata-kata itu telah dipadam.';
     }
     
@@ -2314,12 +2330,11 @@ if (saved) {
         var text = input.value.trim();
         if (text && currentReader) {
             var noteId = Date.now().toString();
-            allNotes.push({ id: noteId, text: text, reader: currentReader });
-            localStorage.setItem('sepasanGkerusi-reader-notes', JSON.stringify(allNotes));
+            var newNote = { id: noteId, text: text, reader: currentReader };
+            commentsRef.child(noteId).set(newNote);
             myNoteIds.push(noteId);
             sessionStorage.setItem('sepasanGkerusi-my-notes', JSON.stringify(myNoteIds));
-            renderWall();
-            meta.textContent = 'Kata-kata kau telah disimpan. Kau boleh padamnya selagi sesi ini masih hidup.';
+            meta.textContent = 'Kata-kata kau telah disimpan. Ia akan kelihatan kepada semua pelawat.';
             input.value = '';
             actions.style.display = 'none';
         }
@@ -2328,11 +2343,11 @@ if (saved) {
     clearBtn.addEventListener('click', function() {
         if (myNoteIds.length > 0) {
             if (confirm('Padam semua kata-kata yang telah kau tinggalkan?')) {
-                allNotes = allNotes.filter(function(note) { return myNoteIds.indexOf(note.id) === -1; });
-                localStorage.setItem('sepasanGkerusi-reader-notes', JSON.stringify(allNotes));
+                for (var i = 0; i < myNoteIds.length; i++) {
+                    commentsRef.child(myNoteIds[i]).remove();
+                }
                 myNoteIds = [];
                 sessionStorage.removeItem('sepasanGkerusi-my-notes');
-                renderWall();
                 input.value = '';
                 actions.style.display = 'none';
                 meta.textContent = 'Semua kata-kata kau telah dipadam.';
