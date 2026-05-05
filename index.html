@@ -38,6 +38,63 @@ body {
     color: var(--text-main);
 }
 
+/* SIDE NAVIGATION MINIMAL */
+.side-nav {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    font-family: 'Inter', sans-serif;
+}
+.side-nav-toggle {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4em;
+    font-style: italic;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+.side-nav-toggle:hover {
+    border-color: var(--accent);
+    color: var(--text-main);
+}
+.side-nav-menu {
+    display: none;
+    margin-top: 8px;
+    background: var(--bg-main);
+    border: 1px solid var(--line);
+    padding: 12px 0;
+    min-width: 200px;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.side-nav-menu.open {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+.side-nav-menu a {
+    display: block;
+    padding: 6px 16px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    line-height: 1.6;
+}
+.side-nav-menu a:hover {
+    color: var(--text-main);
+    background: var(--bg-soft);
+    border-left: 2px solid var(--accent);
+    padding-left: 14px;
+}
+
 .main-title-page {
     text-align: center;
     margin: 80px 0 60px 0;
@@ -317,6 +374,7 @@ body {
 @media print {
     body { background-color: white !important; color: #1a1a1a !important; }
     .section-header { page-break-after: avoid; }
+    .side-nav { display: none; }
     .main-title-page h1, .main-title-page .subtitle, .main-title-page .desc, .main-title-page .author,
     .section-header h2, .section-header .section-desc, .section-header .section-num,
     .poem-title, .poem-body, .poem-note, .section-note, .character-note, .editor-note {
@@ -329,6 +387,8 @@ body {
 
 @media (max-width: 600px) {
     body { padding: 30px 16px; }
+    .side-nav { top: 10px; left: 10px; }
+    .side-nav-toggle { font-size: 1.2em; padding: 4px 10px; }
     .main-title-page h1 { font-size: 2.2em; }
     .section-header h2 { font-size: 1.4em; }
     .poem-title { font-size: 1.2em; }
@@ -336,6 +396,23 @@ body {
 </style>
 </head>
 <body>
+
+<!-- ============================================ -->
+<!-- SIDE NAVIGATION MINIMAL                      -->
+<!-- ============================================ -->
+<div class="side-nav">
+    <button class="side-nav-toggle" id="sideNavToggle" aria-label="Navigasi">bahagian</button>
+    <div class="side-nav-menu" id="sideNavMenu">
+        <a href="#prolog">Prolog</a>
+        <a href="#bahagian-satu">I. Hujan &amp; Kehanyutan</a>
+        <a href="#bahagian-dua">II. Apsara &amp; Mitos Peribadi</a>
+        <a href="#bahagian-tiga">III. Neraka Peribadi</a>
+        <a href="#bahagian-empat">IV. Surat Untuk Yang Telah Pergi</a>
+        <a href="#bahagian-lima">V. Cinta Tak Terhantar</a>
+        <a href="#bahagian-enam">VI. Surat-Surat Cinta &amp; Akad</a>
+        <a href="#bahagian-tujuh">VII. Suara Dari Luar</a>
+    </div>
+</div>
 
 <!-- ============================================ -->
 <!-- LANDING PAGE: IDENTITI PEMBACA -->
@@ -364,7 +441,7 @@ body {
 </div>
 
 <!-- PROLOG -->
-<div class="section-header">
+<div class="section-header" id="prolog">
 <div class="section-num">PROLOG</div>
 <h2>LALU</h2>
 </div>
@@ -506,7 +583,7 @@ TAMAT</div>
 <div class="spacer"></div>
 
 <!-- BAHAGIAN 1: HUJAN & KEHANYUTAN -->
-<div class="section-header">
+<div class="section-header" id="bahagian-satu">
 <div class="section-num">BAHAGIAN SATU</div>
 <h2>Hujan & Kehanyutan</h2>
 <div class="section-desc">Alam sebagai cermin jiwa. Dari syukur naif, melalui jeritan dan lawan, kepada penerimaan.</div>
@@ -822,8 +899,10 @@ Kerana sekarang aku hanya mampu hanyut.</div>
 
 <p class="editor-note">Tamat Bahagian Satu — 10 karya.</p>
 
+<div class="spacer"></div>
+
 <!-- BAHAGIAN 2: APSARA & MITOS PERIBADI -->
-<div class="section-header">
+<div class="section-header" id="bahagian-dua">
 <div class="section-num">BAHAGIAN DUA</div>
 <h2>Apsara & Mitos Peribadi</h2>
 <div class="section-desc">Bidadari yang turun, terbang, didekonstruksi, diratapi, dan akhirnya tinggal aksara.</div>
@@ -1132,7 +1211,7 @@ Well, the 74th race, took his life, and he dies.</div>
 <div class="spacer"></div>
 
 <!-- BAHAGIAN 3: NERAKA PERIBADI -->
-<div class="section-header">
+<div class="section-header" id="bahagian-tiga">
 <div class="section-num">BAHAGIAN TIGA</div>
 <h2>Neraka Peribadi</h2>
 <div class="section-desc">Kegelapan paling dalam. Kemurungan, pelarian, dan berdiri di tepi pagar antara hidup dan mati.</div>
@@ -1363,7 +1442,7 @@ Kan?</div>
 <div class="spacer"></div>
 
 <!-- BAHAGIAN 4: SURAT UNTUK YANG TELAH PERGI -->
-<div class="section-header">
+<div class="section-header" id="bahagian-empat">
 <div class="section-num">BAHAGIAN EMPAT</div>
 <h2>Surat Untuk Yang Telah Pergi</h2>
 <div class="section-desc">Monumen untuk Abang Cik dan Abah — dua lelaki yang pergi dulu.</div>
@@ -1549,13 +1628,12 @@ Wahai Tuhan,
 Berikanlah aku cukup hanya satu mesin masa,
 Agar dapat aku tukarkan setiap hela nyawa aku yang sia-sia,
 Dengan orang yang lebih layak menerima setiap hela nyawaku dari-Mu; dia.</div>
-
 <p class="editor-note">Tamat Bahagian Empat — 6 karya.</p>
 
 <div class="spacer"></div>
 
 <!-- BAHAGIAN 5: CINTA TAK TERHANTAR -->
-<div class="section-header">
+<div class="section-header" id="bahagian-lima">
 <div class="section-num">BAHAGIAN LIMA</div>
 <h2>Cinta Tak Terhantar</h2>
 <div class="section-desc">Surat-surat yang tidak pernah sampai. Untuk "dia" — cinta senyap dari 2012 yang tidak berbalas.</div>
@@ -1880,7 +1958,7 @@ Pulanglah SEMUAnya..
 <div class="spacer"></div>
 
 <!-- BAHAGIAN 6: SURAT-SURAT CINTA & AKAD -->
-<div class="section-header">
+<div class="section-header" id="bahagian-enam">
 <div class="section-num">BAHAGIAN ENAM</div>
 <h2>Surat-Surat Cinta & Akad</h2>
 <div class="section-desc">Selepas semua luka, cinta menemui bentuknya yang paling sihat.</div>
@@ -1998,7 +2076,7 @@ Lahir semula sebagai suami orang.</div>
 <div class="spacer"></div>
 
 <!-- BAHAGIAN 7: SUARA DARI LUAR -->
-<div class="section-header">
+<div class="section-header" id="bahagian-tujuh">
 <div class="section-num">BAHAGIAN TUJUH</div>
 <h2>Suara Dari Luar</h2>
 <div class="section-desc">Eksperimen, spoken word, kenegaraan, spiritual, dan manifesto.</div>
@@ -2184,12 +2262,12 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
 </div><!-- TAMAT mainContent -->
 
 <!-- ============================================ -->
-<!-- JAVASCRIPT: FIREBASE + LANDING PAGE + RUANG KOMEN -->
+<!-- JAVASCRIPT: FIREBASE + LANDING + SIDE NAV + KOMEN -->
 <!-- ============================================ -->
 <script>
 (function() {
     // ============================================
-    // FIREBASE CONFIG — GUNA CONFIG SEBENAR KAU
+    // FIREBASE CONFIG
     // ============================================
     const firebaseConfig = {
         apiKey: "AIzaSyDPzQm4Dz6r1E9g6AdJwZGyn3p2hWa4iKk",
@@ -2201,10 +2279,39 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
         appId: "1:254718885831:web:b75ae32a116bc20ad563e2"
     };
 
-    // Initialize Firebase (cara compat)
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const commentsRef = database.ref('comments');
+
+    // ============================================
+    // SIDE NAV TOGGLE
+    // ============================================
+    var sideNavToggle = document.getElementById('sideNavToggle');
+    var sideNavMenu = document.getElementById('sideNavMenu');
+
+    if (sideNavToggle && sideNavMenu) {
+        sideNavToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (sideNavMenu.classList.contains('open')) {
+                sideNavMenu.classList.remove('open');
+            } else {
+                sideNavMenu.classList.add('open');
+            }
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!sideNavMenu.contains(e.target) && e.target !== sideNavToggle) {
+                sideNavMenu.classList.remove('open');
+            }
+        });
+        
+        var navLinks = sideNavMenu.querySelectorAll('a');
+        for (var i = 0; i < navLinks.length; i++) {
+            navLinks[i].addEventListener('click', function() {
+                sideNavMenu.classList.remove('open');
+            });
+        }
+    }
 
     // ============================================
     // LANDING PAGE LOGIC
@@ -2215,13 +2322,8 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     var enterBtn = document.getElementById('enterBtn');
     var landingError = document.getElementById('landingError');
     
-    // Jana ID unik untuk pembaca (simpan dalam localStorage, bukan sessionStorage)
     var currentReader = sessionStorage.getItem('sepasanGkerusi-reader-id');
-    if (!currentReader) {
-        // Jika tiada ID, tunggu landing page
-        currentReader = null;
-    } else {
-        // Jika ada ID, terus masuk
+    if (currentReader) {
         landingPage.style.display = 'none';
         mainContent.style.display = 'block';
     }
@@ -2229,7 +2331,6 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     enterBtn.addEventListener('click', function() {
         var name = readerNameInput.value.trim();
         if (name.length > 0) {
-            // Simpan ID dalam localStorage (kekal walaupun refresh)
             sessionStorage.setItem('sepasanGkerusi-reader-id', name);
             currentReader = name;
             landingPage.style.display = 'none';
@@ -2258,7 +2359,6 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     
     var allNotes = [];
     
-    // Dengar perubahan di Firebase (real-time)
     commentsRef.on('value', function(snapshot) {
         var data = snapshot.val();
         allNotes = [];
@@ -2271,7 +2371,6 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
         renderWall();
     });
     
-    // Papar semua komen di dinding
     function renderWall() {
         if (allNotes.length === 0) {
             wall.innerHTML = '';
@@ -2282,7 +2381,6 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
             var note = allNotes[i];
             html += '<div style="color:var(--text-note);font-size:0.8em;margin-bottom:2px;font-style:normal;">' + escapeHTML(note.reader) + '</div>';
             html += '<div>' + note.text.replace(/\n/g, '<br>') + '</div>';
-            // Tunjuk butang padam jika ID pembaca sepadan dengan ID dalam komen
             if (currentReader && note.readerId === currentReader) {
                 html += ' <button class="delete-note-btn" data-id="' + note.id + '">[padam]</button>';
             }
@@ -2328,7 +2426,7 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
                 id: noteId, 
                 text: text, 
                 reader: currentReader,
-                readerId: currentReader  // Simpan ID pembaca dalam komen
+                readerId: currentReader
             };
             commentsRef.child(noteId).set(newNote);
             meta.textContent = 'Kata-kata kau telah disimpan. Ia akan kelihatan kepada semua pelawat.';
@@ -2339,7 +2437,6 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     
     clearBtn.addEventListener('click', function() {
         if (currentReader) {
-            // Cari semua komen yang ditulis oleh pembaca ini
             var notesToDelete = [];
             for (var i = 0; i < allNotes.length; i++) {
                 if (allNotes[i].readerId === currentReader) {
