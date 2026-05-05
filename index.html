@@ -2216,7 +2216,7 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
     var landingError = document.getElementById('landingError');
     
     // Jana ID unik untuk pembaca (simpan dalam localStorage, bukan sessionStorage)
-    var currentReader = localStorage.getItem('sepasanGkerusi-reader-id');
+    var currentReader = sessionStorage.getItem('sepasanGkerusi-reader-id');
     if (!currentReader) {
         // Jika tiada ID, tunggu landing page
         currentReader = null;
@@ -2230,7 +2230,7 @@ Tarikh 10 Oktober 1999 adalah tarikh kejadian, bukan tarikh penulisan.</span>
         var name = readerNameInput.value.trim();
         if (name.length > 0) {
             // Simpan ID dalam localStorage (kekal walaupun refresh)
-            localStorage.setItem('sepasanGkerusi-reader-id', name);
+            sessionStorage.setItem('sepasanGkerusi-reader-id', name);
             currentReader = name;
             landingPage.style.display = 'none';
             mainContent.style.display = 'block';
