@@ -2234,8 +2234,24 @@ if (inputField) {
     var clearBtn = document.getElementById('readerClear');
     
     // Muat semua komen sedia ada
-    var saved = localStorage.getItem('sepasanGkerusi-reader-notes');
-    var allNotes = saved ? JSON.parse(saved) : [];
+var saved = localStorage.getItem('sepasanGkerusi-reader-notes');
+var allNotes = [];
+if (saved) {
+    try {
+        var parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+            allNotes = parsed;
+        } else {
+            // Data lama bukan array — buang
+            localStorage.removeItem('sepasanGkerusi-reader-notes');
+            allNotes = [];
+        }
+    } catch (e) {
+        // Data rosak — buang
+        localStorage.removeItem('sepasanGkerusi-reader-notes');
+        allNotes = [];
+    }
+}
     
     // Muat senarai ID komen yang dimiliki oleh pembaca semasa
     var myNotes = sessionStorage.getItem('sepasanGkerusi-my-notes');
